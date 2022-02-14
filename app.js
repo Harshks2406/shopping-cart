@@ -7,13 +7,15 @@ const port = process.env.PORT || 2425
 const cookieParser = require('cookie-parser')
 
 
-const templatePath = path.join(__dirname,'views')
-const static_path = path.join(__dirname,'public')
+const templatePath = path.join(__dirname,'/templates/views')
+const static_path = path.join(__dirname,'/public/')
+const partialPath = path.join(__dirname,'templates/partials')
 
 // const routes= require('./routes/index')
 
 app.set('views',templatePath)
 app.set('view engine', 'hbs')
+hbs.registerPartials(partialPath)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))

@@ -13,6 +13,22 @@
     </div>
 </div> --}}
 
+<div class="box">
+  {{#each product}}
+  <div class="card m-4">
+    <img  class="card-img-top" src="{{this.imagePath}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{this.title}}</h5>
+      <p class="card-text">{{this.description}} </p>
+    </div>
+    <div class="clearfix">
+            <div class="price ml-3">${{this.price}}</div>
+            <a href="" class="btn btn-success float-right m-3" role="button">Add to Cart</a> 
+    </div>
+  </div>
+  {{/each}}
+</div>
+
 <div class="card-group">
    <div class="card m-4">
     <img  class="card-img-top" src="https://upload.wikimedia.org/wikipedia/en/5/5e/Gothiccover.png" alt="Card image cap">

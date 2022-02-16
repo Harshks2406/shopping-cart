@@ -6,8 +6,14 @@ const hbs = require('hbs');
 const port = process.env.PORT || 2425
 const cookieParser = require('cookie-parser');
 const Product = require('./src/models/shop');
+const csrf = require('csurf')
+const csrfProtection = csrf()
+const session = require('express-session')
+const passport = require('passport')
+const flash = require('connect-flash')
 
 require('./src/db/connect')
+require('./config/passport')
 
 const templatePath = path.join(__dirname,'/templates/views')
 const static_path = path.join(__dirname,'/public/')
@@ -23,12 +29,20 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(static_path))
 app.use(cookieParser())
-
-// app.use('/',routes);
+app.use(session({secret: 'mysupersecret', resave: false, saveUninitialized:false}))
+app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(csrfProtection)
 
 app.get('/',(req,res)=>{
     Product.find(function(err,docs){
-        res.render('index',{product:docs})
+        var productChunks = []
+        var chunkSize = 3
+        for( var i=0; i<docs.length; i += chunkSize){
+            productChunks.push(docs.slice(i,i+chunkSize))
+        }
+        res.render('index',{products:productChunks})
     })
 })
 
@@ -49,6 +63,20 @@ app.post('/product',(req,res)=>{
 //     next(err)
 // })
 
+app.get('/user/signup',(req,res)=>{
+    var messages = req.flash('error')
+    res.render('signup',{csrfToken: req.csrfToken(), messages: messages, hasErrors : messages.length>0 })
+})
+
+app.post('/user/signup',passport.authenticate('local.signup',{
+    successRedirect: '/user/profile',
+    failureRedirect: '/user/signup',
+    failureFlash: true
+}))
+
+app.get('/user/profile',(req,res)=>{
+    res.render('profile')
+})
 
 app.listen(port,()=>{
     console.log(`Server started on http://localhost:${port}`)

@@ -14,12 +14,17 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          User Management
+          <i class="fa-solid fa-user"></i> User Management
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/user/profile"><i class="fa-solid fa-user"></i> User Account</a>
-          <a class="dropdown-item" href="/user/signup"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-          <a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+          {{#if login}} 
+              <a class="dropdown-item" href="/user/profile"><i class="fa-solid fa-address-card"></i> User Account</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/user/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+          {{else}}
+              <a class="dropdown-item" href="/user/signup"><i class="fa-solid fa-user-plus"></i> Sign up</a>
+              <a class="dropdown-item" href="/user/signin"><i class="fa-solid fa-right-to-bracket"></i> Sign in</a>
+          {{/if}}
           {{!-- <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a> --}}
         </div>

@@ -19,7 +19,8 @@ const templatePath = path.join(__dirname,'/templates/views')
 const static_path = path.join(__dirname,'/public/')
 const partialPath = path.join(__dirname,'templates/partials')
 
-// const routes= require('./routes/index')
+const routes= require('./routes/index')
+const userRoutes= require('./routes/user')
 
 app.set('views',templatePath)
 app.set('view engine', 'hbs')
@@ -35,16 +36,28 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(csrfProtection)
 
-app.get('/',(req,res)=>{
-    Product.find(function(err,docs){
-        var productChunks = []
-        var chunkSize = 3
-        for( var i=0; i<docs.length; i += chunkSize){
-            productChunks.push(docs.slice(i,i+chunkSize))
-        }
-        res.render('index',{products:productChunks})
-    })
+// to check whether user is logged in or not 
+// locals is variable available in our views
+// it will check for every request sent
+
+app.use((req,res,next)=>{
+    res.locals.login = req.isAuthenticated()
+    next()
 })
+
+app.use('/user',userRoutes)
+app.use('/',routes)
+
+// app.get('/',(req,res)=>{
+//     Product.find(function(err,docs){
+//         var productChunks = []
+//         var chunkSize = 3
+//         for( var i=0; i<docs.length; i += chunkSize){
+//             productChunks.push(docs.slice(i,i+chunkSize))
+//         }
+//         res.render('index',{products:productChunks})
+//     })
+// })
 
 app.post('/product',(req,res)=>{
     try {
@@ -63,20 +76,20 @@ app.post('/product',(req,res)=>{
 //     next(err)
 // })
 
-app.get('/user/signup',(req,res)=>{
-    var messages = req.flash('error')
-    res.render('signup',{csrfToken: req.csrfToken(), messages: messages, hasErrors : messages.length>0 })
-})
+// app.get('/user/signup',(req,res)=>{
+//     var messages = req.flash('error')
+//     res.render('signup',{csrfToken: req.csrfToken(), messages: messages, hasErrors : messages.length>0 })
+// })
 
-app.post('/user/signup',passport.authenticate('local.signup',{
-    successRedirect: '/user/profile',
-    failureRedirect: '/user/signup',
-    failureFlash: true
-}))
+// app.post('/user/signup',passport.authenticate('local.signup',{
+//     successRedirect: '/user/profile',
+//     failureRedirect: '/user/signup',
+//     failureFlash: true
+// }))
 
-app.get('/user/profile',(req,res)=>{
-    res.render('profile')
-})
+// app.get('/user/profile',(req,res)=>{
+//     res.render('profile')
+// })
 
 app.listen(port,()=>{
     console.log(`Server started on http://localhost:${port}`)

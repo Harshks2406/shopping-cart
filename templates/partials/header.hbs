@@ -10,7 +10,12 @@
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
+        <a class="nav-link" href="/shopping-cart">
+          <i class="fa-solid fa-cart-shopping"></i> Shopping Cart
+          {{#if session.cart.totalQty}}
+          <span class="badges">{{session.cart.totalQty}}</span>
+          {{/if}}
+        </a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

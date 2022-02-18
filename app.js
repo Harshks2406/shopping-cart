@@ -5,12 +5,14 @@ const bodyParser = require('body-parser')
 const hbs = require('hbs');
 const port = process.env.PORT || 2425
 const cookieParser = require('cookie-parser');
-const Product = require('./src/models/shop');
 const csrf = require('csurf')
 const csrfProtection = csrf()
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
+const validator = require('express-validator')
+const MongoStore = require('connect-mongo')
+
 
 require('./src/db/connect')
 require('./config/passport')
@@ -30,7 +32,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static(static_path))
 app.use(cookieParser())
-app.use(session({secret: 'mysupersecret', resave: false, saveUninitialized:false}))
+app.use(session({
+    secret: 'mysupersecret', 
+    resave: false, 
+    saveUninitialized:false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL ||"mongodb://localhost:27017/shopping"}),
+    cookie: { maxAge: 180 * 60 * 1000}
+}))
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
@@ -42,6 +50,7 @@ app.use(csrfProtection)
 
 app.use((req,res,next)=>{
     res.locals.login = req.isAuthenticated()
+    res.locals.session = req.session
     next()
 })
 

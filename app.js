@@ -10,7 +10,7 @@ const csrfProtection = csrf()
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
-const validator = require('express-validator')
+const expressvalidator = require('express-validator')
 const MongoStore = require('connect-mongo')
 
 
@@ -30,6 +30,7 @@ hbs.registerPartials(partialPath)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+// app.use(expressvalidator())
 app.use(express.static(static_path))
 app.use(cookieParser())
 app.use(session({

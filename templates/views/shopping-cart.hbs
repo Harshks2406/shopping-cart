@@ -5,7 +5,7 @@
                 {{#each products}}
                     <li class="list-group-item">
                     <strong>{{this.item.title}}</strong>
-                    <span class="label label-success">${{this.price}}</span>
+                    <span class="label label-success ">${{this.price}}</span>
                     <div class="btn-group">
                         <button class="btn btn-primary btn-xs dropdown-toggle dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
                             <ul class="dropdown-menu">
@@ -21,7 +21,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6 col-md-6  m-auto">
-            <strong>Total: ${{totalPrice}} </strong>
+            <strong class="total">Total: ${{totalPrice}} </strong>
         </div>
     </div> 
     <hr>

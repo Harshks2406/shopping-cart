@@ -39,6 +39,14 @@ router.get('/reduce/:id',(req,res)=>{
     res.redirect('/shopping-cart')
 })
 
+router.get('/reduceAll/:id',(req,res)=>{
+    const productId = req.params.id
+    const cart = new Cart(req.session.cart ? req.session.cart : {})
+    cart.reduceAll(productId)
+    req.session.cart = cart
+    res.redirect('/shopping-cart')
+})
+
 router.get('/shopping-cart',(req,res)=>{
     if(!req.session.cart){
         return res.render('shopping-cart',{products: null})

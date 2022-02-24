@@ -31,3 +31,12 @@
     color: white;
     background-color: rgba(0, 0, 0, 0.473);
 }
+@media screen and (min-width: 0px) and (max-width: 769px){
+    .box{
+        flex-direction: column;
+    }
+
+    .card-img-top{
+        max-width: 40%;
+    }
+}
